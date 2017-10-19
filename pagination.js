@@ -6,14 +6,19 @@ const cheeseEl = document.getElementById("cheeseDisplayer")
 
 // Build the DOM string for the pagination links in the footer
 let paginationString = "<ul>"
+paginationString += "<a id='previous' href='#'>&lt;</a>"
 for (var i = 0; i < numberOfPages; i++) {
-    paginationString += ` <li><a class="cheese-page" id="page-${i+1}" href="#">${i+1}</a></li>`
+    paginationString += ` <li><a class="cheesePage page-${i+1}" href="#">${i+1}</a></li>`
 }
+paginationString += " <a id='next' class='page-2' href='#'>&gt;</a>"
 paginationString += "</ul>"
 
 // Update the DOM with the unordered list we just built
 paginationEl.innerHTML = paginationString
 
+// Store references to the next and previous arrows we just added
+const previousEl = document.getElementById("previous")
+const nextEl = document.getElementById("next")
 
 /*
     Function that will be invoked each time the user clicks
@@ -24,7 +29,19 @@ function produceCheese (event) {
     cheeseEl.innerHTML = ""
 
     // Which number did the user click on?
-    const pageNumber = parseInt(event.target.innerHTML)
+    const pageNumber = parseInt(
+        Array.from(event.target.classList)
+        .find(clazz => {
+            if (clazz.startsWith("page-")) return clazz
+        })
+        .split("-")[1]
+    )
+
+    // Change the class name of the previous arrow
+    previousEl.className = `page-${pageNumber - 1}`
+
+    // Change the class name of the next arrow
+    nextEl.className = `page-${pageNumber + 1}`
 
     // Determine which items to display by slicing the array
     const itemsToDisplay = CheeseDatabase.slice(
@@ -46,7 +63,7 @@ function produceCheese (event) {
 }
 
 // Get the array of pagination anchor tags we added to the DOM
-const cheeseLinks = document.getElementsByClassName("cheese-page")
+const cheeseLinks = document.getElementsByClassName("cheesePage")
 
 // Add event listeners to each <a> element in the pagination
 for (let j = 0; j < cheeseLinks.length; j++) {
@@ -54,9 +71,14 @@ for (let j = 0; j < cheeseLinks.length; j++) {
     thisCheeseEl.addEventListener("click", produceCheese, false);
 }
 
+produceCheese({
+    "target": {
+        "classList": ["page-1"]
+    }
+})
 
-
-
+previousEl.addEventListener("click", produceCheese)
+nextEl.addEventListener("click", produceCheese)
 
 
 
