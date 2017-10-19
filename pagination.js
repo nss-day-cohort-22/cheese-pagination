@@ -38,10 +38,20 @@ function produceCheese (event) {
     )
 
     // Change the class name of the previous arrow
-    previousEl.className = `page-${pageNumber - 1}`
+    if ((pageNumber - 1) === 0) {
+        previousEl.style.display = "none"
+    } else {
+        previousEl.style.display = "inline"
+        previousEl.className = `page-${pageNumber - 1}`
+    }
 
     // Change the class name of the next arrow
-    nextEl.className = `page-${pageNumber + 1}`
+    if ((pageNumber + 1) > numberOfPages) {
+        nextEl.style.display = "none"
+    } else {
+        nextEl.style.display = "inline"
+        nextEl.className = `page-${pageNumber + 1}`
+    }
 
     // Determine which items to display by slicing the array
     const itemsToDisplay = CheeseDatabase.slice(
