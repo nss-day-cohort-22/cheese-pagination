@@ -29,6 +29,25 @@ function produceCheese (event) {
     cheeseEl.innerHTML = ""
 
     // Which number did the user click on?
+
+    // Convert DOMTokenList to Array
+    const classes = event.target.classList
+    const classArray = Array.from(classes)
+
+    // Find the class we want that match pattern "page-n"
+    const targetClass = classArray.find(clazz => {
+        if (clazz.startsWith("page-")) return clazz
+    })
+
+    // Split the class into an array on the dash
+    const pageNumberArray = targetClass.split("-")
+
+    // Get the actual page number ["page", "1"]
+    const actualPageNumber = pageNumberArray[1]
+
+    // Convert the string into an integer
+    const integerPageNumber = parseInt(actualPageNumber)
+
     const pageNumber = parseInt(
         Array.from(event.target.classList)
         .find(clazz => {
